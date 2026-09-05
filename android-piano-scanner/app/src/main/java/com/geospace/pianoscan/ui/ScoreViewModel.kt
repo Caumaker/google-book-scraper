@@ -52,14 +52,21 @@ class ScoreViewModel(app: Application) : AndroidViewModel(app) {
 
     // --- entrada de imagens ---------------------------------------------------------
 
-    fun addPage(uri: Uri) = viewModelScope.launch {
-        val bitmap = withContext(Dispatchers.IO) {
-            ImageUtils.loadNormalized(getApplication<Application>(), uri)
+    /** Carrega as imagens em serie para as paginas entrarem na ordem escolhida. */
+    fun addPages(uris: List<Uri>) = viewModelScope.launch {
+        var failed = 0
+        for (uri in uris) {
+            val bitmap = withContext(Dispatchers.IO) {
+                ImageUtils.loadNormalized(getApplication<Application>(), uri)
+            }
+            if (bitmap == null) failed++
+            else _ui.value = _ui.value.copy(pages = _ui.value.pages + bitmap, error = null)
         }
-        if (bitmap == null) {
-            _ui.value = _ui.value.copy(error = "Nao consegui abrir essa imagem.")
-        } else {
-            _ui.value = _ui.value.copy(pages = _ui.value.pages + bitmap, error = null)
+        if (failed > 0) {
+            _ui.value = _ui.value.copy(
+                error = if (failed == 1) "Nao consegui abrir uma das imagens."
+                else "Nao consegui abrir $failed imagens."
+            )
         }
     }
 

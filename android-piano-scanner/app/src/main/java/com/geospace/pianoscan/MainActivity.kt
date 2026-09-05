@@ -97,7 +97,7 @@ private fun App(vm: ScoreViewModel = viewModel()) {
 
             state.stage == Stage.CAPTURE -> CaptureScreen(
                 state = state,
-                onPickImage = { vm.addPage(it) },
+                onPickImages = { vm.addPages(it) },
                 onOpenCamera = { showCamera = true },
                 onRemovePage = { vm.removePage(it) },
                 onHintChange = { vm.setHint(it) },

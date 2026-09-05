@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CaptureScreen(
     state: UiState,
-    onPickImage: (android.net.Uri) -> Unit,
+    onPickImages: (List<android.net.Uri>) -> Unit,
     onOpenCamera: () -> Unit,
     onRemovePage: (Int) -> Unit,
     onHintChange: (String) -> Unit,
@@ -64,8 +64,8 @@ fun CaptureScreen(
     onOpenSettings: () -> Unit
 ) {
     val picker = rememberLauncherForActivityResult(
-        ActivityResultContracts.PickVisualMedia()
-    ) { uri -> uri?.let(onPickImage) }
+        ActivityResultContracts.PickMultipleVisualMedia(MAX_PAGES)
+    ) { uris -> if (uris.isNotEmpty()) onPickImages(uris) }
 
     Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(
@@ -237,3 +237,6 @@ fun CaptureScreen(
         }
     }
 }
+
+/** Teto do seletor de galeria. Uma peca raramente passa disso em paginas. */
+private const val MAX_PAGES = 10
