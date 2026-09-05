@@ -1,0 +1,3 @@
+<resources>
+    <style name="Theme.PianoScan" parent="android:Theme.Material.NoActionBar" />
+</resources>

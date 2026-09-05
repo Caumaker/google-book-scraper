@@ -1,0 +1,2 @@
+-keepclassmembers class com.geospace.pianoscan.data.** { *; }
+-keep,includedescriptorclasses class com.geospace.pianoscan.data.**$$serializer { *; }
